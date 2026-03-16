@@ -3048,7 +3048,7 @@ if (isMain) {
 
       if (cli.values.http) {
         const port = Number(cli.values.port) || 8181;
-        const host = cli.values.host || "localhost";
+        const host = typeof cli.values.host === "string" ? cli.values.host : "localhost";
 
         if (cli.values.daemon) {
           // Guard: check if already running
@@ -3069,7 +3069,7 @@ if (isMain) {
           const selfPath = fileURLToPath(import.meta.url);
           const spawnArgs = selfPath.endsWith(".ts")
             ? ["--import", pathJoin(dirname(selfPath), "..", "..", "node_modules", "tsx", "dist", "esm", "index.mjs"), selfPath, "mcp", "--http", "--port", String(port), "--host", host]
-            : [selfPath, "mcp", "--http", "--port", String(port), host];
+            : [selfPath, "mcp", "--http", "--port", String(port), "--host", host];
           const child = nodeSpawn(process.execPath, spawnArgs, {
             stdio: ["ignore", logFd, logFd],
             detached: true,
